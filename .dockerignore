@@ -1,0 +1,7 @@
+node_modules
+.expo
+coverage
+npm-debug.log
+Dockerfile
+docker-compose.yml
+.git

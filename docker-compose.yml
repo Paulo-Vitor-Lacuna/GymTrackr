@@ -1,0 +1,35 @@
+services:
+  app:
+    build: .
+    command: npm run web
+    environment:
+      EXPO_NO_TELEMETRY: "1"
+      EXPO_PORT: "8081"
+    ports:
+      - "8081:8081"
+      - "19000:19000"
+      - "19001:19001"
+      - "19002:19002"
+    volumes:
+      - .:/app
+      - /app/node_modules
+  mobile-tunnel:
+    build: .
+    command: npm run mobile:tunnel
+    stdin_open: true
+    tty: true
+    environment:
+      EXPO_TOKEN: ${EXPO_TOKEN:-}
+      EXPO_NO_TELEMETRY: "1"
+      EXPO_PORT: "8081"
+      EXPO_TUNNEL_ATTEMPTS: "6"
+      EXPO_TUNNEL_RETRY_MS: "5000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+  test:
+    build: .
+    command: npm test
+    environment:
+      EXPO_NO_TELEMETRY: "1"
+      CI: "1"
