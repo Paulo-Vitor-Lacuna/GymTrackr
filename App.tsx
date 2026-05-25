@@ -133,6 +133,7 @@ function TrainingPlanCard({
         style={[styles.planCard, { transform: [{ translateX }] }]}
         {...panResponder.panHandlers}
       >
+        <View style={styles.planAccent} />
         <Pressable accessibilityRole="button" style={styles.planCardMain} onPress={() => onStart(plan)}>
           <Text style={styles.planTitle}>{plan.name}</Text>
           <Text style={styles.planMeta}>
@@ -812,7 +813,7 @@ export default function App() {
           </Text>
         </View>
       ) : (
-        [...editingPlan.exercises].reverse().map((exercise, index) => (
+        [...editingPlan.exercises].reverse().map((exercise) => (
           <View
             key={exercise.id}
             onLayout={(event) => {
@@ -827,7 +828,6 @@ export default function App() {
                     ref={editingExerciseInputRef}
                     accessibilityLabel={`Editar ${exercise.name}`}
                     autoCapitalize="sentences"
-                    blurOnSubmit={false}
                     returnKeyType="done"
                     style={[styles.input, styles.exerciseEditInput, editingExerciseError ? styles.inputError : null]}
                     value={editingExerciseName}
@@ -915,7 +915,7 @@ export default function App() {
             <Text style={styles.emptyCopy}>Edite o treino e adicione os aparelhos antes de registrar séries.</Text>
           </View>
         ) : (
-          activePlan.exercises.map((exercise, index) => {
+          activePlan.exercises.map((exercise) => {
             const sessionEntries = entries.filter(
               (entry) => entry.sessionId === activeSession?.id && entry.exerciseId === exercise.id
             );
@@ -929,7 +929,6 @@ export default function App() {
                 onPress={() => openExerciseLog(navigation, exercise.id)}
               >
                 <View style={styles.exerciseRowMain}>
-                  <Text style={styles.exerciseIndex}>{String(index + 1).padStart(2, "0")}</Text>
                   <Text style={styles.entryTitle}>{exercise.name}</Text>
                   <Text style={styles.entryMeta}>
                     {sessionEntries.length === 0
@@ -1016,9 +1015,7 @@ export default function App() {
                   loadInputRefs.current[exercise.id] = ref;
                 }}
                 accessibilityLabel={`Carga ${exercise.name}`}
-                inputMode="decimal"
-                keyboardType="decimal-pad"
-                blurOnSubmit={false}
+                keyboardType="numbers-and-punctuation"
                 returnKeyType="next"
                 style={[styles.input, errors.loadKg ? styles.inputError : null]}
                 value={draft.loadKg}
@@ -1038,9 +1035,7 @@ export default function App() {
                   repsInputRefs.current[exercise.id] = ref;
                 }}
                 accessibilityLabel={`Repetições ${exercise.name}`}
-                inputMode="numeric"
-                keyboardType="number-pad"
-                blurOnSubmit={false}
+                keyboardType="numbers-and-punctuation"
                 returnKeyType="done"
                 style={[styles.input, errors.reps ? styles.inputError : null]}
                 value={draft.reps}
@@ -1151,16 +1146,16 @@ export default function App() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#f7f5f0"
+    backgroundColor: "#f4f6f8"
   },
   keyboard: {
     flex: 1
   },
   container: {
     alignSelf: "center",
-    gap: 18,
+    gap: 20,
     maxWidth: 760,
-    padding: 20,
+    padding: 18,
     paddingBottom: 140,
     width: "100%"
   },
@@ -1171,15 +1166,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   eyebrow: {
-    color: "#6f6a60",
+    color: "#687282",
     fontSize: 13,
-    fontWeight: "700",
+    fontWeight: "800",
     textTransform: "uppercase"
   },
   title: {
-    color: "#171513",
+    color: "#111318",
     fontSize: 36,
-    fontWeight: "800",
+    fontWeight: "900",
     letterSpacing: 0
   },
   statsRow: {
@@ -1187,7 +1182,7 @@ const styles = StyleSheet.create({
     gap: 10
   },
   tabs: {
-    backgroundColor: "#ebe5dc",
+    backgroundColor: "#e7ebf0",
     borderRadius: 8,
     flexDirection: "row",
     gap: 4,
@@ -1201,36 +1196,41 @@ const styles = StyleSheet.create({
     minHeight: 42
   },
   tabButtonActive: {
-    backgroundColor: "#ffffff",
-    borderColor: "#dfd9ce",
+    backgroundColor: "#111318",
+    borderColor: "#111318",
     borderWidth: 1
   },
   tabButtonText: {
-    color: "#6f6a60",
+    color: "#687282",
     fontSize: 14,
     fontWeight: "800"
   },
   tabButtonTextActive: {
-    color: "#24211d"
+    color: "#ffffff"
   },
   statBlock: {
-    backgroundColor: "#24211d",
+    backgroundColor: "#111318",
     borderRadius: 8,
     flex: 1,
     justifyContent: "space-between",
-    minHeight: 82,
-    padding: 14
+    minHeight: 86,
+    padding: 14,
+    shadowColor: "#111318",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
+    elevation: 3
   },
   statValue: {
     color: "#ffffff",
-    fontSize: 23,
-    fontWeight: "800",
+    fontSize: 24,
+    fontWeight: "900",
     letterSpacing: 0
   },
   statLabel: {
-    color: "#cfc8ba",
+    color: "#9aa6b6",
     fontSize: 12,
-    fontWeight: "700",
+    fontWeight: "800",
     textTransform: "uppercase"
   },
   sectionHeader: {
@@ -1240,24 +1240,29 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   prompt: {
-    color: "#24211d",
+    color: "#171a21",
     flex: 1,
     fontSize: 23,
-    fontWeight: "800",
+    fontWeight: "900",
     letterSpacing: 0
   },
   panel: {
     backgroundColor: "#ffffff",
-    borderColor: "#dfd9ce",
+    borderColor: "#dfe5ec",
     borderRadius: 8,
     borderWidth: 1,
     gap: 14,
-    padding: 16
+    padding: 16,
+    shadowColor: "#111318",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.06,
+    shadowRadius: 16,
+    elevation: 2
   },
   panelTitle: {
-    color: "#24211d",
+    color: "#171a21",
     fontSize: 20,
-    fontWeight: "800",
+    fontWeight: "900",
     letterSpacing: 0
   },
   field: {
@@ -1272,35 +1277,40 @@ const styles = StyleSheet.create({
     gap: 6
   },
   label: {
-    color: "#4b463f",
+    color: "#3c4656",
     fontSize: 14,
-    fontWeight: "700"
+    fontWeight: "800"
   },
   input: {
-    backgroundColor: "#fbfaf7",
-    borderColor: "#cfc8ba",
+    backgroundColor: "#f8fafc",
+    borderColor: "#cfd7e2",
     borderRadius: 8,
     borderWidth: 1,
-    color: "#171513",
+    color: "#111318",
     fontSize: 18,
     minHeight: 52,
     paddingHorizontal: 14
   },
   inputError: {
-    borderColor: "#bd3f32"
+    borderColor: "#d84a3a"
   },
   error: {
-    color: "#a1342a",
+    color: "#b42318",
     fontSize: 12,
-    fontWeight: "700"
+    fontWeight: "800"
   },
   primaryButton: {
     alignItems: "center",
-    backgroundColor: "#2f6f65",
+    backgroundColor: "#111318",
     borderRadius: 8,
     justifyContent: "center",
     minHeight: 52,
-    paddingHorizontal: 18
+    paddingHorizontal: 18,
+    shadowColor: "#111318",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.16,
+    shadowRadius: 14,
+    elevation: 3
   },
   primaryButtonText: {
     color: "#ffffff",
@@ -1309,8 +1319,8 @@ const styles = StyleSheet.create({
   },
   secondaryButton: {
     alignItems: "center",
-    backgroundColor: "#ffffff",
-    borderColor: "#2f6f65",
+    backgroundColor: "#111318",
+    borderColor: "#111318",
     borderRadius: 8,
     borderWidth: 1,
     justifyContent: "center",
@@ -1318,14 +1328,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14
   },
   secondaryButtonText: {
-    color: "#2f6f65",
+    color: "#ffffff",
     fontSize: 14,
-    fontWeight: "800"
+    fontWeight: "900"
   },
   inlineButton: {
     alignItems: "center",
     alignSelf: "flex-start",
-    backgroundColor: "#2f6f65",
+    backgroundColor: "#111318",
     borderRadius: 8,
     justifyContent: "center",
     marginTop: 12,
@@ -1339,7 +1349,7 @@ const styles = StyleSheet.create({
   },
   smallPrimaryButton: {
     alignItems: "center",
-    backgroundColor: "#2f6f65",
+    backgroundColor: "#111318",
     borderRadius: 8,
     justifyContent: "center",
     minHeight: 40,
@@ -1353,7 +1363,7 @@ const styles = StyleSheet.create({
   smallGhostButton: {
     alignItems: "center",
     backgroundColor: "#ffffff",
-    borderColor: "#dfd9ce",
+    borderColor: "#dfe5ec",
     borderRadius: 8,
     borderWidth: 1,
     justifyContent: "center",
@@ -1361,13 +1371,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14
   },
   smallGhostButtonText: {
-    color: "#4b463f",
+    color: "#202632",
     fontSize: 14,
-    fontWeight: "800"
+    fontWeight: "900"
   },
   compactPrimaryButton: {
     alignItems: "center",
-    backgroundColor: "#2f6f65",
+    backgroundColor: "#111318",
     borderRadius: 8,
     justifyContent: "center",
     minHeight: 34,
@@ -1381,7 +1391,7 @@ const styles = StyleSheet.create({
   compactGhostButton: {
     alignItems: "center",
     backgroundColor: "#ffffff",
-    borderColor: "#dfd9ce",
+    borderColor: "#dfe5ec",
     borderRadius: 8,
     borderWidth: 1,
     justifyContent: "center",
@@ -1389,9 +1399,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   compactGhostButtonText: {
-    color: "#4b463f",
+    color: "#202632",
     fontSize: 12,
-    fontWeight: "800"
+    fontWeight: "900"
   },
   navRow: {
     flexDirection: "row",
@@ -1399,19 +1409,20 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   emptyState: {
-    borderColor: "#dfd9ce",
+    backgroundColor: "#ffffff",
+    borderColor: "#cfd7e2",
     borderRadius: 8,
     borderStyle: "dashed",
     borderWidth: 1,
     padding: 18
   },
   emptyTitle: {
-    color: "#24211d",
+    color: "#171a21",
     fontSize: 17,
-    fontWeight: "800"
+    fontWeight: "900"
   },
   emptyCopy: {
-    color: "#6f6a60",
+    color: "#687282",
     fontSize: 14,
     lineHeight: 20,
     marginTop: 6
@@ -1424,7 +1435,7 @@ const styles = StyleSheet.create({
   },
   deleteAction: {
     alignItems: "center",
-    backgroundColor: "#a13a31",
+    backgroundColor: "#d84a3a",
     bottom: 0,
     justifyContent: "center",
     position: "absolute",
@@ -1440,36 +1451,52 @@ const styles = StyleSheet.create({
   planCard: {
     alignItems: "center",
     backgroundColor: "#ffffff",
-    borderColor: "#dfd9ce",
+    borderColor: "#dfe5ec",
     borderRadius: 8,
     borderWidth: 1,
     flexDirection: "row",
     gap: 12,
     justifyContent: "space-between",
     minHeight: 86,
-    padding: 14
+    padding: 14,
+    shadowColor: "#111318",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.08,
+    shadowRadius: 18,
+    elevation: 2
+  },
+  planAccent: {
+    alignSelf: "stretch",
+    backgroundColor: "#b7f34a",
+    borderRadius: 8,
+    width: 5
   },
   planCardMain: {
     flex: 1,
     gap: 5
   },
   planTitle: {
-    color: "#171513",
+    color: "#111318",
     fontSize: 19,
     fontWeight: "900"
   },
   planMeta: {
-    color: "#756f65",
+    color: "#687282",
     fontSize: 13,
-    fontWeight: "700"
+    fontWeight: "800"
   },
   historyCard: {
     backgroundColor: "#ffffff",
-    borderColor: "#dfd9ce",
+    borderColor: "#dfe5ec",
     borderRadius: 8,
     borderWidth: 1,
     gap: 14,
-    padding: 14
+    padding: 14,
+    shadowColor: "#111318",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.06,
+    shadowRadius: 16,
+    elevation: 2
   },
   historyCardHeader: {
     alignItems: "center",
@@ -1485,8 +1512,8 @@ const styles = StyleSheet.create({
   },
   detailsButton: {
     alignItems: "center",
-    backgroundColor: "#fbfaf7",
-    borderColor: "#dfd9ce",
+    backgroundColor: "#f8fafc",
+    borderColor: "#dfe5ec",
     borderRadius: 8,
     borderWidth: 1,
     justifyContent: "center",
@@ -1494,12 +1521,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14
   },
   detailsButtonText: {
-    color: "#2f6f65",
+    color: "#126b58",
     fontSize: 14,
-    fontWeight: "800"
+    fontWeight: "900"
   },
   sessionEntryList: {
-    borderTopColor: "#ece7de",
+    borderTopColor: "#e8edf3",
     borderTopWidth: 1,
     gap: 10,
     paddingTop: 12
@@ -1526,7 +1553,7 @@ const styles = StyleSheet.create({
   },
   squareButton: {
     alignItems: "center",
-    backgroundColor: "#2f6f65",
+    backgroundColor: "#111318",
     borderRadius: 8,
     justifyContent: "center",
     minHeight: 52,
@@ -1540,14 +1567,19 @@ const styles = StyleSheet.create({
   exerciseRow: {
     alignItems: "center",
     backgroundColor: "#ffffff",
-    borderColor: "#dfd9ce",
+    borderColor: "#dfe5ec",
     borderRadius: 8,
     borderWidth: 1,
     flexDirection: "row",
     gap: 12,
     justifyContent: "space-between",
     minHeight: 76,
-    padding: 14
+    padding: 14,
+    shadowColor: "#111318",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.05,
+    shadowRadius: 14,
+    elevation: 1
   },
   exerciseRowEditing: {
     alignItems: "center"
@@ -1581,7 +1613,7 @@ const styles = StyleSheet.create({
   },
   exerciseEditConfirmButton: {
     alignItems: "center",
-    backgroundColor: "#2f6f65",
+    backgroundColor: "#111318",
     borderRadius: 8,
     height: 38,
     justifyContent: "center",
@@ -1596,7 +1628,7 @@ const styles = StyleSheet.create({
   exerciseEditCancelButton: {
     alignItems: "center",
     backgroundColor: "#ffffff",
-    borderColor: "#dfd9ce",
+    borderColor: "#dfe5ec",
     borderRadius: 8,
     borderWidth: 1,
     height: 38,
@@ -1604,7 +1636,7 @@ const styles = StyleSheet.create({
     width: 38
   },
   exerciseEditCancelButtonText: {
-    color: "#4b463f",
+    color: "#202632",
     fontSize: 16,
     fontWeight: "900",
     lineHeight: 20
@@ -1612,14 +1644,19 @@ const styles = StyleSheet.create({
   exerciseSelectCard: {
     alignItems: "center",
     backgroundColor: "#ffffff",
-    borderColor: "#dfd9ce",
+    borderColor: "#dfe5ec",
     borderRadius: 8,
     borderWidth: 1,
     flexDirection: "row",
     gap: 12,
     justifyContent: "space-between",
     minHeight: 84,
-    padding: 14
+    padding: 14,
+    shadowColor: "#111318",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.05,
+    shadowRadius: 14,
+    elevation: 1
   },
   exerciseRowMain: {
     flex: 1
@@ -1628,41 +1665,40 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     minWidth: 82
   },
-  exerciseIndex: {
-    color: "#2f6f65",
-    fontSize: 12,
-    fontWeight: "900",
-    marginBottom: 3
-  },
   exerciseHeader: {
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between"
   },
   historyHint: {
-    color: "#6f6a60",
+    color: "#687282",
     fontSize: 13,
-    fontWeight: "700"
+    fontWeight: "800"
   },
   entry: {
     alignItems: "center",
     backgroundColor: "#ffffff",
-    borderColor: "#dfd9ce",
+    borderColor: "#dfe5ec",
     borderRadius: 8,
     borderWidth: 1,
     flexDirection: "row",
     gap: 14,
     justifyContent: "space-between",
     minHeight: 78,
-    padding: 14
+    padding: 14,
+    shadowColor: "#111318",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.05,
+    shadowRadius: 14,
+    elevation: 1
   },
   entryTitle: {
-    color: "#171513",
+    color: "#111318",
     fontSize: 17,
     fontWeight: "800"
   },
   entryMeta: {
-    color: "#756f65",
+    color: "#687282",
     fontSize: 13,
     marginTop: 4
   },
@@ -1670,19 +1706,19 @@ const styles = StyleSheet.create({
     alignItems: "flex-end"
   },
   entryLoad: {
-    color: "#2f6f65",
+    color: "#126b58",
     fontSize: 18,
     fontWeight: "900"
   },
   entryReps: {
-    color: "#4b463f",
+    color: "#3c4656",
     fontSize: 13,
     fontWeight: "700",
     marginTop: 4
   },
   entryRemoveButton: {
     alignItems: "center",
-    borderColor: "#dfd9ce",
+    borderColor: "#dfe5ec",
     borderRadius: 8,
     borderWidth: 1,
     justifyContent: "center",
@@ -1691,12 +1727,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   entryRemoveButtonText: {
-    color: "#7d3029",
+    color: "#b42318",
     fontSize: 12,
     fontWeight: "800"
   },
   miniHistory: {
-    borderTopColor: "#ece7de",
+    borderTopColor: "#e8edf3",
     borderTopWidth: 1,
     gap: 8,
     paddingTop: 12
@@ -1707,7 +1743,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   miniHistoryText: {
-    color: "#2f6f65",
+    color: "#126b58",
     fontSize: 14,
     fontWeight: "900"
   }
